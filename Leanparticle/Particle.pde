@@ -4,11 +4,19 @@ class Particle {
     PVector acceleration;
     float lifespan;
 
+    float mass = 1;
+
     Particle(PVector l) {
         location        = l.get();
-        acceleration    = new PVector(0, 0.05);
+        acceleration    = new PVector(0, 0);
         velocity        = new PVector(random(-1, 1), random(-2, 0));
         lifespan        = 255.0;
+    }
+
+    void applyForce(PVector force) {
+      PVector f = force.get();
+      f.div(mass);
+      acceleration.add(f);
     }
 
     void run() {
@@ -19,6 +27,7 @@ class Particle {
     void update() {
         velocity.add(acceleration);
         location.add(velocity);
+        acceleration.mult(0);
         lifespan -= 2.0;
     }
 

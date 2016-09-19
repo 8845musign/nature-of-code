@@ -16,6 +16,16 @@ class ParticleSystem {
         confetti.add(new Confetti(origin));
     }
 
+    void applyForce(PVector f) {
+      for (Particle p: particles) {
+        p.applyForce(f);
+      }
+
+      for (Particle p: confetti) {
+        p.applyForce(f);
+      }
+    }
+
     void run () {
         Iterator<Particle> it = particles.iterator();
         while(it.hasNext()) {

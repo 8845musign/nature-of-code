@@ -25,6 +25,10 @@ public void setup() {
 
 public void draw() {
     background(255);
+
+    PVector gravity = new PVector(0, 0.2f);
+
+    ps.applyForce(gravity);
     ps.addParticle();
     ps.run();
 }
@@ -53,11 +57,19 @@ class Particle {
     PVector acceleration;
     float lifespan;
 
+    float mass = 1;
+
     Particle(PVector l) {
         location        = l.get();
-        acceleration    = new PVector(0, 0.05f);
+        acceleration    = new PVector(0, 0);
         velocity        = new PVector(random(-1, 1), random(-2, 0));
         lifespan        = 255.0f;
+    }
+
+    public void applyForce(PVector force) {
+      PVector f = force.get();
+      f.div(mass);
+      acceleration.add(f);
     }
 
     public void run() {
@@ -68,6 +80,7 @@ class Particle {
     public void update() {
         velocity.add(acceleration);
         location.add(velocity);
+        acceleration.mult(0);
         lifespan -= 2.0f;
     }
 
@@ -101,6 +114,16 @@ class ParticleSystem {
     public void addParticle() {
         particles.add(new Particle(origin));
         confetti.add(new Confetti(origin));
+    }
+
+    public void applyForce(PVector f) {
+      for (Particle p: particles) {
+        p.applyForce(f);
+      }
+
+      for (Particle p: confetti) {
+        p.applyForce(f);
+      }
     }
 
     public void run () {

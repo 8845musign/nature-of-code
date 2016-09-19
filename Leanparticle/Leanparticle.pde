@@ -7,6 +7,10 @@ void setup() {
 
 void draw() {
     background(255);
+
+    PVector gravity = new PVector(0, 0.2);
+
+    ps.applyForce(gravity);
     ps.addParticle();
     ps.run();
 }
